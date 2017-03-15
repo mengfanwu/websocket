@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] [ %p ] \( %t \) %logger%n%msg%n%X%n%ex%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${catalina.base}/logs/ibss.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>5</maxHistory>
+            <cleanHistoryOnStart>true</cleanHistoryOnStart>
+        </rollingPolicy>
+        <encoder>
+            <pattern>[ %d{yyyy-MM-dd HH:mm:ss.SSS} ] [ %p ] \( %t \) %logger%n%msg%n%X%n%ex%n</pattern>
+        </encoder>
+    </appender>
+    <appender name="Async" class="ch.qos.logback.classic.AsyncAppender">
+        <!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->
+        <discardingThreshold>0</discardingThreshold>
+        <!-- 添加附加的appender,最多只能添加一个 -->
+        <appender-ref ref="RollingFile" />
+    </appender>
+
+    <logger name="chat" level="DEBUG" />
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
